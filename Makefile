@@ -16,6 +16,7 @@ TARGET_NAME       := $(PROJECT_NAME)
 TARGET_PATH       := $(JAVA_BUILD_PATH)/$(TARGET_NAME).jar
 
 TESTS_PATH        := tests
+PLAYWRIGHT        := npx playwright
 
 MAVEN_URL         := https://repo1.maven.org/maven2
 TEST_DEPS_PATH    := $(abspath $(BUILD_PATH)/tests/.dependencies)
@@ -31,7 +32,7 @@ FRONT_PATH        := front-delivery
 ROOT_NODE_DEPS    := node_modules
 FRONT_NODE_DEPS   := $(FRONT_PATH)/node_modules
 
-.PHONY: help collect_dependencies collect_dev_dependencies build run test regression
+.PHONY: help collect_dependencies collect_dev_dependencies build run test regression test_frontend
 .DELETE_ON_ERROR:
 
 export JUNIT_JAR JACOCO_AGENT_JAR JACOCO_CLI_JAR
@@ -46,6 +47,7 @@ help:
 	@echo "make test                      executa os testes"
 	@echo "                               TEST_SUITE=unit|integration|all"
 	@echo "make regression                executa a regressao nos commits definidos"
+	@echo "make test_frontend             executa os testes do front-end"
 
 collect_dependencies: $(ROOT_NODE_DEPS) $(FRONT_NODE_DEPS)
 	@echo "-- [$@] --"
@@ -69,6 +71,11 @@ test: collect_dev_dependencies
 regression: collect_dev_dependencies
 	@echo "-- [$@] --"
 	$(MAKE) -C $(TESTS_PATH) regression
+
+test_frontend: $(FRONT_NODE_DEPS)
+	@echo "-- [$@] --"
+	cd $(FRONT_PATH) && $(PLAYWRIGHT) install chromium
+	cd $(FRONT_PATH) && $(PLAYWRIGHT) test
 
 $(JUNIT_JAR):        MAVEN_PATH := org/junit/platform/junit-platform-console-standalone/$(JUNIT_VERSION)
 $(JACOCO_AGENT_JAR): MAVEN_PATH := org/jacoco/org.jacoco.agent/$(JACOCO_VERSION)
