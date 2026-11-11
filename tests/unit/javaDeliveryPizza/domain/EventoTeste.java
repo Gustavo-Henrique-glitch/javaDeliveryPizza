@@ -1,7 +1,7 @@
 package javaDeliveryPizza.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.junit.jupiter.api.Assertions.assertAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,5 +20,21 @@ class EventoTeste {
 
         evento.setAvaliacao(6);
         assertEquals(5, evento.getAvaliacao());
+    }
+
+    @Test
+    @DisplayName("UT-02: Um evento  recem-criado começa como Agendado e  com valos zerados ")
+    void eventoRecemCriadoComecaAgendadoComValoresZerados(){
+        Evento evento= new Evento(1);
+        assertAll(
+            ()-> assertEquals(1, evento.getId()),
+            ()-> assertEquals("AGENDADO",evento.getStatus()),
+            ()-> assertEquals(0, evento.getBuffet().size()),
+            ()-> assertEquals(0, evento.getPublicoReal()),
+            ()-> assertEquals(0, evento.getIngressosVendidos()),
+            ()-> assertEquals(0, evento.getAvaliacao()),
+            ()-> assertEquals(0, evento.getPrecoIngresso(), 0.001)
+
+        );
     }
 }
