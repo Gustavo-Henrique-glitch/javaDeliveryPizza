@@ -1,0 +1,11 @@
+{
+    "java.project.sourcePaths": [
+        "src",
+        "tests/helpers",
+        "tests/unit",
+        "tests/integration"
+    ],
+    "java.project.referencedLibraries": [
+        "build/tests/.dependencies/*.jar"
+    ]
+}
