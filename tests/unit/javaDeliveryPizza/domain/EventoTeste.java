@@ -37,4 +37,63 @@ class EventoTeste {
 
         );
     }
+
+    @Test
+    @DisplayName("UT-03a: setIngressosVendidos espelha o valor em publicoReal")
+    void setIngressosVendidosEspelhaNoPublicoReal(){
+        Evento  evento = new Evento(1);
+        evento.setPublicoReal(10);
+        evento.setIngressosVendidos(20);
+
+        assertAll(
+
+            ()-> assertEquals(20, evento.getIngressosVendidos()),
+            ()-> assertEquals(20, evento.getPublicoReal())
+
+        );
+    }
+
+    @Test
+    @DisplayName("UT-03b: setPublicoReal não altera ingressosVendidos")
+    void setPublicoRealNaoAlteraIngressosVendidos(){
+        Evento evento = new Evento(1);
+        evento.setIngressosVendidos(10);
+        evento.setPublicoReal(20);
+
+        assertAll(
+            ()-> assertEquals(10, evento.getIngressosVendidos()),
+            ()-> assertEquals(20, evento.getPublicoReal())
+        );
+    }
+
+    @Test
+    @DisplayName("UT-05: setIngressosVendidos limita valores negativos a zero e zera publicoReal")
+    void setIngressosVendidosLimitaValoresNegativos(){
+        Evento evento = new Evento(1);
+        evento.setPublicoReal(10);
+        evento.setIngressosVendidos(-10);
+
+        assertAll(
+            ()-> assertEquals(0, evento.getIngressosVendidos()),
+            ()-> assertEquals(0, evento.getPublicoReal())
+        );
+
+
+    }
+
+    @Test
+    @DisplayName("UT-06: setPublicoReal limita valores negativos sem alterar IngressosVendidos")
+    void setPublicoRealLimitaValoresNegativos(){
+        Evento evento = new Evento(1);
+        evento.setIngressosVendidos(10);
+        evento.setPublicoReal(-10);
+        
+
+        assertAll(
+            ()-> assertEquals(10, evento.getIngressosVendidos()),
+            ()-> assertEquals(0, evento.getPublicoReal())
+        );
+
+
+    }
 }
