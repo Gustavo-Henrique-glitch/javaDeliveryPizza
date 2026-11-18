@@ -132,7 +132,25 @@ class EventoTeste {
         evento.setPrecoIngresso(50);
         evento.setIngressosVendidos(0);
         assertEquals(0, evento.receitaIngressos(),0.001);
-        
+
+    }
+
+    @Test 
+    @DisplayName ("UT-09: adicionarItemBuffet adiciona item ao buffet na ordem de inserção")
+    void adicionarItemBuffetAdicionaItemAoBuffetNaOrdemDeInsercao(){
+        Evento evento = new Evento(1);
+        Pizza produto1 = new Pizza("calabresa","Grande",100);
+        Pizza produto2 = new Pizza("margherita","Pequeno",50);
+        ItemProduto item1 = new ItemProduto(produto1, 10);
+        ItemProduto item2 = new ItemProduto(produto2, 5);
+        evento.adicionarItemBuffet(item1);
+        evento.adicionarItemBuffet(item2);
+
+        assertAll(
+            ()-> assertEquals(2, evento.getBuffet().size()),
+            ()-> assertEquals(item1, evento.getBuffet().get(0)),
+            ()-> assertEquals(item2, evento.getBuffet().get(1))
+        );
     }
 
 
