@@ -106,4 +106,13 @@ class EventoTeste {
         evento.setPrecoIngresso(-10);
         assertEquals(0,evento.getPrecoIngresso(),0.001);
     }
+
+    @Test 
+    @DisplayName ("UT-08a: receita ingresso multiplica preco por ingressos vendidos")
+    void receitaIngressoMultiplicaPrecoPorIngressosVendidos(){
+        Evento evento = new Evento(1);
+        evento.setPrecoIngresso(50);
+        evento.setIngressosVendidos(10);
+        assertEquals(500, evento.receitaIngressos(),0.001);
+    }
 }
