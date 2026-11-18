@@ -96,4 +96,14 @@ class EventoTeste {
 
 
     }
+
+
+    @Test
+    @DisplayName ("UT-07: setPrecoIngresso limita valores negativos a zero")
+    void setPrecoIngressoLimitaValoresNegativos(){
+        Evento evento = new Evento(1);
+        evento.setPrecoIngresso(50);
+        evento.setPrecoIngresso(-10);
+        assertEquals(0,evento.getPrecoIngresso(),0.001);
+    }
 }
