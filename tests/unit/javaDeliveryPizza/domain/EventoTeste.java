@@ -115,4 +115,26 @@ class EventoTeste {
         evento.setIngressosVendidos(10);
         assertEquals(500, evento.receitaIngressos(),0.001);
     }
+
+    @Test 
+    @DisplayName("UT-08b: receita ingresso retorna zero se preco ou ingressos vendidos forem zero(preco=0)")
+    void receitaIngressoRetornaZeroSePrecoOuIngressosVendidosForemZero(){
+        Evento evento = new Evento(1);
+        evento.setPrecoIngresso(0);
+        evento.setIngressosVendidos(10);
+        assertEquals(0, evento.receitaIngressos(),0.001);
+    }
+
+    @Test 
+    @DisplayName("UT-08c: receita ingresso retorna zero se preco ou ingressos vendidos forem zero(ingressos=0)")
+    void receitaIngressoRetornaZeroSePrecoOuIngressosVendidosForemZero2(){
+        Evento evento = new Evento(1);
+        evento.setPrecoIngresso(50);
+        evento.setIngressosVendidos(0);
+        assertEquals(0, evento.receitaIngressos(),0.001);
+        
+    }
+
+
+    
 }
