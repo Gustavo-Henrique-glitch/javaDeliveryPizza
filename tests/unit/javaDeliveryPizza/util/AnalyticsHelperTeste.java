@@ -2,7 +2,6 @@ package javaDeliveryPizza.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.internal.ArrayComparisonFailure;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +12,6 @@ import javaDeliveryPizza.domain.Pizza;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.platform.suite.api.Suite;
 import java.util.ArrayList;
 import java.util.List;
 
