@@ -2,6 +2,7 @@ package javaDeliveryPizza.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.internal.ArrayComparisonFailure;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -12,6 +13,9 @@ import javaDeliveryPizza.domain.Pizza;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.platform.suite.api.Suite;
+import java.util.ArrayList;
+import java.util.List;
 
 class AnalyticsHelperTeste {
 
@@ -49,6 +53,16 @@ class AnalyticsHelperTeste {
         assertEquals(3.14, AnalyticsHelper.arred2(3.14159), 0.001);
         assertEquals(2.72, AnalyticsHelper.arred2(2.71828), 0.001);
         assertEquals(1.41, AnalyticsHelper.arred2(1.41421), 0.001);
+    }
+
+    @Test 
+    @DisplayName ("UT- 12: encontra a posição da chave na lista")
+    void encontrarPosicaoDaChaveNaLista(){
+        ArrayList<String> lista = new ArrayList<>(List.of("ana", "gustavo", "joao"));
+        assertEquals(1, AnalyticsHelper.indice(lista, "gustavo"));
+        assertEquals(-1, AnalyticsHelper.indice(lista, "maria"));
+        assertEquals(0, AnalyticsHelper.indice(lista, "ana"));
+        assertEquals(2, AnalyticsHelper.indice(lista, "joao"));
     }
 
 }
