@@ -10,6 +10,9 @@ import javaDeliveryPizza.domain.ItemProduto;
 import javaDeliveryPizza.domain.Pedido;
 import javaDeliveryPizza.domain.Pizza;
 
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
 class AnalyticsHelperTeste {
 
     @Test
@@ -21,4 +24,21 @@ class AnalyticsHelperTeste {
 
         assertEquals(104.0, AnalyticsHelper.valorTotal(pedido), 0.001);
     }
+
+    @ParameterizedTest (name = "dia{0}-> {1} ")
+    @CsvSource({
+        "1,Seg",
+        "2,Ter",
+        "3,Qua",
+        "4,Qui",
+        "5,Sex",
+        "6,Sab",
+        "7,Dom",
+        "8,?"
+    })
+    @DisplayName("UT-00: nomeDia retorna abreviação correta para cada dia da semana")
+    void traduzNumerosDoDia(int dia, String eperado){
+        assertEquals(eperado, AnalyticsHelper.nomeDia(dia));
+    }
+    
 }
