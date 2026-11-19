@@ -148,8 +148,10 @@ class EventoTeste {
 
         assertAll(
             ()-> assertEquals(2, evento.getBuffet().size()),
-            ()-> assertEquals(item1, evento.getBuffet().get(0)),
-            ()-> assertEquals(item2, evento.getBuffet().get(1))
+            ()-> assertEquals(item1.getProduto().getTamanho(), evento.getBuffet().get(0).getProduto().getTamanho()),
+            ()-> assertEquals(item1.getProduto().getPreco(), evento.getBuffet().get(0).getProduto().getPreco()),
+            ()-> assertEquals(item2.getProduto().getTamanho(), evento.getBuffet().get(1).getProduto().getTamanho()),
+            ()-> assertEquals(item2.getProduto().getPreco(), evento.getBuffet().get(1).getProduto().getPreco())
         );
     }
 
