@@ -41,4 +41,14 @@ class AnalyticsHelperTeste {
         assertEquals(eperado, AnalyticsHelper.nomeDia(dia));
     }
 
+
+    @Test 
+    @DisplayName ("UT- 11: arred2 arredonda para duas casas decimais")
+    void arredondarParaDuasCasasDecimais(){
+        
+        assertEquals(3.14, AnalyticsHelper.arred2(3.14159), 0.001);
+        assertEquals(2.72, AnalyticsHelper.arred2(2.71828), 0.001);
+        assertEquals(1.41, AnalyticsHelper.arred2(1.41421), 0.001);
+    }
+
 }
