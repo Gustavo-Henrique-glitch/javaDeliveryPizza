@@ -102,36 +102,36 @@ class EventoTeste {
     @DisplayName ("UT-07: setPrecoIngresso limita valores negativos a zero")
     void setPrecoIngressoLimitaValoresNegativos(){
         Evento evento = new Evento(1);
-        evento.setPrecoIngresso(50);
+        evento.setPrecoIngresso(50.0);
         evento.setPrecoIngresso(-10);
-        assertEquals(0,evento.getPrecoIngresso(),0.001);
+        assertEquals(0.0,evento.getPrecoIngresso(),0.001);
     }
 
     @Test 
     @DisplayName ("UT-08a: receita ingresso multiplica preco por ingressos vendidos")
     void receitaIngressoMultiplicaPrecoPorIngressosVendidos(){
         Evento evento = new Evento(1);
-        evento.setPrecoIngresso(50);
+        evento.setPrecoIngresso(50.0);
         evento.setIngressosVendidos(10);
-        assertEquals(500, evento.receitaIngressos(),0.001);
+        assertEquals(500.0, evento.receitaIngressos(),0.001);
     }
 
     @Test 
     @DisplayName("UT-08b: receita ingresso retorna zero se preco for zero")
     void receitaIngressoEhZeroComPrecoZero(){
         Evento evento = new Evento(1);
-        evento.setPrecoIngresso(0);
+        evento.setPrecoIngresso(0.0);
         evento.setIngressosVendidos(10);
-        assertEquals(0, evento.receitaIngressos(),0.001);
+        assertEquals(0.0, evento.receitaIngressos(),0.001);
     }
 
     @Test 
     @DisplayName("UT-08c: receita ingresso retorna zero se ingressos vendidos for zero")
     void receitaIngressoEhZeroSemIngressosVendidos(){
         Evento evento = new Evento(1);
-        evento.setPrecoIngresso(50);
+        evento.setPrecoIngresso(50.0);
         evento.setIngressosVendidos(0);
-        assertEquals(0, evento.receitaIngressos(),0.001);
+        assertEquals(0.0, evento.receitaIngressos(),0.001);
 
     }
 
