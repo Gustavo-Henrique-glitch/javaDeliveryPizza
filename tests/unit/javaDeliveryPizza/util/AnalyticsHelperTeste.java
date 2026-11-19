@@ -36,9 +36,9 @@ class AnalyticsHelperTeste {
         "7,Dom",
         "8,?"
     })
-    @DisplayName("UT-00: nomeDia retorna abreviação correta para cada dia da semana")
+    @DisplayName("UT-10: nomeDia retorna abreviação correta para cada dia da semana")
     void traduzNumerosDoDia(int dia, String eperado){
         assertEquals(eperado, AnalyticsHelper.nomeDia(dia));
     }
-    
+
 }
