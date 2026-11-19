@@ -63,4 +63,13 @@ class AnalyticsHelperTeste {
         assertEquals(2, AnalyticsHelper.indice(lista, "joao"));
     }
 
+    @Test 
+    @DisplayName("UT- 13: retorna o indice do maior elemento da lista")
+    void retornaIdiceDoMaiorElementoDaLista(){
+        assertEquals(1, AnalyticsHelper.indiceMaior(new ArrayList<>(List.of(1,5,2))));
+        assertEquals(0, AnalyticsHelper.indiceMaior(new ArrayList<>(List.of(5,5,2))));
+        assertEquals(0, AnalyticsHelper.indiceMaior(new ArrayList<>()));
+
+    }
+
 }
