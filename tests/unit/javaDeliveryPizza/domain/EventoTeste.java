@@ -23,7 +23,7 @@ class EventoTeste {
     }
 
     @Test
-    @DisplayName("UT-02: Um evento  recem-criado começa como Agendado e  com valores zerados ")
+    @DisplayName("UT-02: Um evento  recem-criado começa como Agendado e  com valores zerados")
     void eventoRecemCriadoComecaAgendadoComValoresZerados(){
         Evento evento= new Evento(1);
         assertAll(
