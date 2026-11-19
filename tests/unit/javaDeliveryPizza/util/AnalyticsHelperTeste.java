@@ -39,14 +39,14 @@ class AnalyticsHelperTeste {
         "7,Dom",
         "8,?"
     })
-    @DisplayName("UT-10: nomeDia retorna abreviação correta para cada dia da semana")
+    @DisplayName("UT-22: nomeDia retorna abreviação correta para cada dia da semana")
     void traduzNumerosDoDia(int dia, String eperado){
         assertEquals(eperado, AnalyticsHelper.nomeDia(dia));
     }
 
 
     @Test 
-    @DisplayName ("UT- 11: arred2 arredonda para duas casas decimais")
+    @DisplayName ("UT- 21: arred2 arredonda para duas casas decimais")
     void arredondarParaDuasCasasDecimais(){
         
         assertEquals(3.14, AnalyticsHelper.arred2(3.14159), 0.001);
@@ -55,7 +55,7 @@ class AnalyticsHelperTeste {
     }
 
     @Test 
-    @DisplayName ("UT- 12: encontra a posição da chave na lista")
+    @DisplayName ("UT- 17: encontra a posição da chave na lista")
     void encontrarPosicaoDaChaveNaLista(){
         ArrayList<String> lista = new ArrayList<>(List.of("ana", "gustavo", "joao"));
         assertEquals(1, AnalyticsHelper.indice(lista, "gustavo"));
@@ -65,7 +65,7 @@ class AnalyticsHelperTeste {
     }
 
     @Test 
-    @DisplayName("UT- 13: retorna o indice do maior elemento da lista")
+    @DisplayName("UT- 18: retorna o indice do maior elemento da lista")
     void retornaIdiceDoMaiorElementoDaLista(){
         assertEquals(1, AnalyticsHelper.indiceMaior(new ArrayList<>(List.of(1,5,2))));
         assertEquals(0, AnalyticsHelper.indiceMaior(new ArrayList<>(List.of(5,5,2))));
@@ -74,14 +74,14 @@ class AnalyticsHelperTeste {
     }
 
     @Test 
-    @DisplayName ("UT -14: valor total é zero quando não há itens no pedido")
+    @DisplayName ("UT -19: valor total é zero quando não há itens no pedido")
     void valorTotalEhZeroQuandoNaoHaItensNoPedido(){
         Pedido pedido = new Pedido(1);
         assertEquals(0.0, AnalyticsHelper.valorTotal(pedido), 0.001);
     }
 
     @Test 
-    @DisplayName ("UT -15: totalBuffet calcula corretamente o valor total do buffet")
+    @DisplayName ("UT -20: totalBuffet calcula corretamente o valor total do buffet")
     void totalBuffetCalculaCorretamente(){
         Evento evento = new Evento(1);
         evento.adicionarItemBuffet(new ItemProduto(new Pizza("Calabresa", "G", 40.0), 2));
