@@ -15,6 +15,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.util.ArrayList;
 import java.util.List;
 
+import javaDeliveryPizza.domain.Evento;
 class AnalyticsHelperTeste {
 
     @Test
@@ -79,4 +80,12 @@ class AnalyticsHelperTeste {
         assertEquals(0.0, AnalyticsHelper.valorTotal(pedido), 0.001);
     }
 
+    @Test 
+    @DisplayName ("UT -15: totalBuffet calcula corretamente o valor total do buffet")
+    void totalBuffetCalculaCorretamente(){
+        Evento evento = new Evento(1);
+        evento.adicionarItemBuffet(new ItemProduto(new Pizza("Calabresa", "G", 40.0), 2));
+        evento.adicionarItemBuffet(new ItemProduto(new Bebida("Cola", "Lata", 8.0), 3));
+        assertEquals(104.0, AnalyticsHelper.totalBuffet(evento), 0.001);
+    }
 }
