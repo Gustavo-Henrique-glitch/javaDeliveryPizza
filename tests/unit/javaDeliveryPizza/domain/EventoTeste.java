@@ -117,7 +117,7 @@ class EventoTeste {
     }
 
     @Test 
-    @DisplayName("UT-08b: receita ingresso retorna zero se preco ou ingressos vendidos forem zero(preco=0)")
+    @DisplayName("UT-08b: receita ingresso retorna zero se preco for zero")
     void receitaIngressoEhZeroComPrecoZero(){
         Evento evento = new Evento(1);
         evento.setPrecoIngresso(0);
@@ -126,7 +126,7 @@ class EventoTeste {
     }
 
     @Test 
-    @DisplayName("UT-08c: receita ingresso retorna zero se preco ou ingressos vendidos forem zero(ingressos=0)")
+    @DisplayName("UT-08c: receita ingresso retorna zero se ingressos vendidos for zero")
     void receitaIngressoEhZeroSemIngressosVendidos(){
         Evento evento = new Evento(1);
         evento.setPrecoIngresso(50);
