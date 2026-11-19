@@ -72,4 +72,11 @@ class AnalyticsHelperTeste {
 
     }
 
+    @Test 
+    @DisplayName ("UT -14: valor total é zero quando não há itens no pedido")
+    void valorTotalEhZeroQuandoNaoHaItensNoPedido(){
+        Pedido pedido = new Pedido(1);
+        assertEquals(0.0, AnalyticsHelper.valorTotal(pedido), 0.001);
+    }
+
 }
