@@ -34,5 +34,19 @@ public class ProdutoTeste {
         );
         bebida.setNome("Pepsi");
         assertEquals("Pepsi", bebida.getNome());
+    
     }
+
+    @Test 
+    @DisplayName ("UT-27: Alterar o preço  e tamanho de uma pizza e verificar se o preço é atualizado corretamente")
+    public void alterarPrecoETamanhoDeUmaPizza() {
+        Pizza pizza = new Pizza("Calabresa", "G", 25.0);
+        pizza.setPreco(30.0);
+        pizza.setTamanho("M");
+        assertAll(
+            ()-> assertEquals(30.0, pizza.getPreco(), 0.001),
+            ()-> assertEquals("M", pizza.getTamanho())
+        );
+    }
+
 }
