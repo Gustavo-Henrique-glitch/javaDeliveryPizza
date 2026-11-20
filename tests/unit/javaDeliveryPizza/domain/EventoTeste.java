@@ -39,7 +39,7 @@ class EventoTeste {
     }
 
     @Test
-    @DisplayName("UT-03a: setIngressosVendidos espelha o valor em publicoReal")
+    @DisplayName("UT-03a [CARACTERIZAÇÃO - F-01]: setIngressosVendidos sobrescreve o valor em publicoReal (supeita de defeito)")
     void setIngressosVendidosEspelhaNoPublicoReal(){
         Evento  evento = new Evento(1);
         evento.setPublicoReal(10);
@@ -67,7 +67,7 @@ class EventoTeste {
     }
 
     @Test
-    @DisplayName("UT-05: setIngressosVendidos limita valores negativos a zero e zera publicoReal")
+    @DisplayName("UT-05 [CARACTERIZAÇÃO - F-02]: setIngressosVendidos limita valores negativos a zero e apagao o  publicoReal (suspeita de defeito)")
     void setIngressosVendidosLimitaValoresNegativos(){
         Evento evento = new Evento(1);
         evento.setPublicoReal(10);
