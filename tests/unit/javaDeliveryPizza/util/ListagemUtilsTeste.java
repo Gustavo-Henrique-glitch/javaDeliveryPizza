@@ -1,19 +1,14 @@
 package javaDeliveryPizza.util;
 
-import javaDeliveryPizza.util.ListagemUtils;
-import javaDeliveryPizza.domain.Bebida;
-import javaDeliveryPizza.domain.ItemProduto;
-import javaDeliveryPizza.domain.Produto;
-import javaDeliveryPizza.domain.Pizza;
-import javaDeliveryPizza.domain.Bebida;
-import javaDeliveryPizza.domain.ItemProduto;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import javaDeliveryPizza.domain.Bebida;
+import javaDeliveryPizza.domain.ItemProduto;
+
+import javaDeliveryPizza.domain.Pizza;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

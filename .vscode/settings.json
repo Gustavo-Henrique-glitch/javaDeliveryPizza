@@ -3,7 +3,8 @@
         "src",
         "tests/helpers",
         "tests/unit",
-        "tests/integration"
+        "tests/integration",
+        "tests/regression"
     ],
     "java.project.referencedLibraries": [
         "build/tests/.dependencies/*.jar"
