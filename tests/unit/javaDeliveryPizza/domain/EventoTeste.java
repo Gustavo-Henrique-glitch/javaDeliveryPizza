@@ -157,7 +157,7 @@ class EventoTeste {
 
 
     @Test 
-    @DisplayName("UT- 24 [CARACTERIZAÇÃO - F-03]: setCapacidade aceita valores negativos e não altera a capacidade (suspeita de defeito)")
+    @DisplayName("UT-24 [CARACTERIZAÇÃO - F-03]: setCapacidade aceita valores negativos e não altera a capacidade (suspeita de defeito)")
     void setCapacidadeNaoAlteraCapacidadeComValoresNegativos(){
         Evento evento = new Evento(1);
         assertAll(
