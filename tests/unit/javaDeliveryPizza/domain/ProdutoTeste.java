@@ -20,4 +20,19 @@ public class ProdutoTeste {
         pizza.setSabor("Mussarela");
         assertEquals("Mussarela", pizza.getSabor());
     }
+
+    @Test 
+    @DisplayName("UT- 26: Criar uma bebida com tamanho e preço válidos e verificar se os atributos são atribuídos corretamente")
+    public void criarBebidaComAtributosValidos() {
+        Bebida bebida = new Bebida("Coca-Cola", "G", 10.0);
+        assertAll(
+            ()-> assertEquals("Coca-Cola", bebida.getNome()),
+            ()-> assertEquals("G", bebida.getTamanho()),
+            ()-> assertEquals(10.0, bebida.getPreco(), 0.001),
+            ()-> assertEquals("Bebida Coca-Cola", bebida.nomeBase()),
+            ()-> assertEquals("Bebida Coca-Cola (G)", bebida.descricao())
+        );
+        bebida.setNome("Pepsi");
+        assertEquals("Pepsi", bebida.getNome());
+    }
 }
