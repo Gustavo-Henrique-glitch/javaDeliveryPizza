@@ -63,9 +63,7 @@ public class ListagemUtilsTeste {
                         () -> assertEquals("(vazio)", linhas[2]));
             }
         }
-
         finally
-
         {
             System.setOut(originalOut);
         }
