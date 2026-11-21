@@ -1,4 +1,5 @@
 package javaDeliveryPizza.util;
+import javaDeliveryPizza.util.EntradaDados; 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
