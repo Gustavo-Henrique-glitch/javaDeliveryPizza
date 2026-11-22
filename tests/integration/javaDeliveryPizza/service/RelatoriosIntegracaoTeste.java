@@ -1,6 +1,7 @@
 package javaDeliveryPizza.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -149,6 +150,142 @@ class RelatoriosIntegracaoTeste {
         assertTrue(saida.contains("   Salão: 4.5 / 5"), saida);       
         assertTrue(saida.contains("   Eventos: 4.0 / 5"), saida);    
         assertTrue(saida.contains("   Combinado: 4.25 / 5"), saida);  
+    }
+
+    @Test
+    @DisplayName("IT-28: produto mais consumido do salão soma quantidades e ignora pedido cancelado")
+    void produtoMaisConsumidoDoSalaoSomaQuantidades() {
+        Pedido pedido1 = new Pedido(1);
+        pedido1.setStatus("SERVIDO");
+        pedido1.setDiaDaSemana(3);
+        pedido1.addItem(new ItemProduto(new Pizza("Calabresa", "G", 40.0), 2));
+        pedido1.addItem(new ItemProduto(new Bebida("Agua", "Lata", 5.0), 1));
+
+        Pedido pedido2 = new Pedido(2);
+        pedido2.setStatus("SERVIDO");
+        pedido2.setDiaDaSemana(3);
+        pedido2.addItem(new ItemProduto(new Pizza("Calabresa", "G", 40.0), 1));
+
+        Pedido cancelado = new Pedido(3);
+        cancelado.setStatus("CANCELADO");
+        cancelado.setDiaDaSemana(3);
+        cancelado.addItem(new ItemProduto(new Pizza("Mussarela", "G", 40.0), 10));
+
+        ArrayList<Pedido> pedidos = new ArrayList<>();
+        pedidos.add(pedido1);
+        pedidos.add(pedido2);
+        pedidos.add(cancelado);
+
+        String saida = SaidaConsole.capturar(() -> Relatorios.exibirRelatorioCompleto(pedidos, new ArrayList<>()));
+
+        assertTrue(saida.contains("   Salão: Pizza Calabresa (G) (3)"), saida);
+        assertFalse(saida.contains("Mussarela"), saida);
+    }
+
+    @Test
+    @DisplayName("IT-29: consumo combinado soma salão e buffet do evento do mesmo dia")
+    void consumoCombinadoSomaSalaoEEventos() {
+        Pedido pedido = new Pedido(1);
+        pedido.setStatus("SERVIDO");
+        pedido.setDiaDaSemana(2);
+        pedido.addItem(new ItemProduto(new Pizza("Calabresa", "G", 40.0), 1));
+
+        Evento evento = new Evento(1);
+        evento.setNome("Festa");
+        evento.setTipo("Show");
+        evento.setDiaSemana(2);
+        evento.setStatus("AGENDADO");
+        evento.adicionarItemBuffet(new ItemProduto(new Pizza("Calabresa", "G", 40.0), 3));
+
+        ArrayList<Pedido> pedidos = new ArrayList<>();
+        pedidos.add(pedido);
+        ArrayList<Evento> eventos = new ArrayList<>();
+        eventos.add(evento);
+
+        String saida = SaidaConsole.capturar(() -> Relatorios.exibirRelatorioCompleto(pedidos, eventos));
+
+        assertTrue(saida.contains("   Salão: Pizza Calabresa (G) (1)"), saida);
+        assertTrue(saida.contains("   Eventos: Pizza Calabresa (G) (3)"), saida);
+        assertTrue(saida.contains("   Combinado: Pizza Calabresa (G) (4)"), saida);
+    }
+
+    @Test
+    @DisplayName("IT-30: dia só com evento marca salão como vazio e descarta buffet de evento cancelado")
+    void diaSoComEventoMarcaSalaoVazio() {
+        Evento realizado = new Evento(1);
+        realizado.setNome("Festa");
+        realizado.setTipo("Show");
+        realizado.setDiaSemana(2);
+        realizado.setStatus("REALIZADO");
+        realizado.adicionarItemBuffet(new ItemProduto(new Pizza("Calabresa", "G", 40.0), 1));
+
+        Evento cancelado = new Evento(2);
+        cancelado.setNome("Festa cancelada");
+        cancelado.setTipo("Show");
+        cancelado.setDiaSemana(2);
+        cancelado.setStatus("CANCELADO");
+        cancelado.adicionarItemBuffet(new ItemProduto(new Pizza("Mussarela", "G", 40.0), 9));
+
+        ArrayList<Evento> eventos = new ArrayList<>();
+        eventos.add(realizado);
+        eventos.add(cancelado);
+
+        String saida = SaidaConsole.capturar(() -> Relatorios.exibirRelatorioCompleto(new ArrayList<>(), eventos));
+
+        assertTrue(saida.contains("   Salão: —"), saida);
+        assertTrue(saida.contains("   Eventos: Pizza Calabresa (G) (1)"), saida);
+        assertFalse(saida.contains("Mussarela"), saida);
+    }
+
+    @Test
+    @DisplayName("IT-31: top 3 sabores soma salão e eventos e sai em ordem decrescente")
+    void topSaboresSomaSalaoEEventosEmOrdem() {
+        Pedido pedido = new Pedido(1);
+        pedido.setStatus("SERVIDO");
+        pedido.setDiaDaSemana(3);
+        pedido.addItem(new ItemProduto(new Pizza("Calabresa", "G", 40.0), 2));
+        pedido.addItem(new ItemProduto(new Pizza("Mussarela", "G", 40.0), 1));
+
+        ArrayList<Pedido> pedidos = new ArrayList<>();
+        pedidos.add(pedido);
+
+        ArrayList<Evento> eventos = new ArrayList<>();
+        eventos.add(evento(1, "REALIZADO", 40.0, 2, 50.0));
+
+        Evento portuguesa = new Evento(2);
+        portuguesa.setNome("Festa");
+        portuguesa.setTipo("Show");
+        portuguesa.setDiaSemana(3);
+        portuguesa.setStatus("REALIZADO");
+        portuguesa.adicionarItemBuffet(new ItemProduto(new Pizza("Portuguesa", "G", 40.0), 4));
+        eventos.add(portuguesa);
+
+        String saida = SaidaConsole.capturar(() -> Relatorios.exibirRelatorioCompleto(pedidos, eventos));
+
+        assertTrue(saida.contains("1) Portuguesa — 4"), saida);
+        assertTrue(saida.contains("2) Calabresa — 3"), saida);
+        assertTrue(saida.contains("3) Mussarela — 1"), saida);
+    }
+
+    @Test
+    @DisplayName("IT-32: top 3 mostra só as posições com dados e avisa quando não há nenhum sabor")
+    void topSaboresMostraApenasPosicoesComDados() {
+        Pedido pedido = new Pedido(1);
+        pedido.setStatus("SERVIDO");
+        pedido.setDiaDaSemana(3);
+        pedido.addItem(new ItemProduto(new Pizza("Calabresa", "G", 40.0), 2));
+        pedido.addItem(new ItemProduto(new Pizza("Mussarela", "G", 40.0), 1));
+
+        ArrayList<Pedido> pedidos = new ArrayList<>();
+        pedidos.add(pedido);
+
+        String comDoisSabores = SaidaConsole.capturar(() -> Relatorios.exibirRelatorioCompleto(pedidos, new ArrayList<>()));
+        String semDados = SaidaConsole.capturar(() -> Relatorios.exibirRelatorioCompleto(new ArrayList<>(), new ArrayList<>()));
+
+        assertTrue(comDoisSabores.contains("1) Calabresa — 2"), comDoisSabores);
+        assertTrue(comDoisSabores.contains("2) Mussarela — 1"), comDoisSabores);
+        assertFalse(comDoisSabores.contains("\n3) "), comDoisSabores);
+        assertTrue(semDados.contains("(sem dados)"), semDados);
     }
 
     private static Pedido vendaServida(double valor) {
