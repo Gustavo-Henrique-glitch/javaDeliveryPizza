@@ -119,7 +119,7 @@ class RelatoriosIntegracaoTeste {
         Pedido nota4 = vendaServida(10.0);
         nota4.setAvaliacao(4);
 
-        Pedido semNota = vendaServida(10.0); // avaliação 0: fica fora
+        Pedido semNota = vendaServida(10.0); 
 
         Pedido cancelado = new Pedido(4);
         cancelado.setStatus("CANCELADO");
@@ -286,6 +286,151 @@ class RelatoriosIntegracaoTeste {
         assertTrue(comDoisSabores.contains("2) Mussarela — 1"), comDoisSabores);
         assertFalse(comDoisSabores.contains("\n3) "), comDoisSabores);
         assertTrue(semDados.contains("(sem dados)"), semDados);
+    }
+
+    @Test
+    @DisplayName("IT-33: adesão ao buffet conta só realizados e calcula percentual e médias sobre eles")
+    void adesaoAoBuffetCalculaPercentualEMedias() {
+        Evento comBuffet2Itens = new Evento(1);
+        comBuffet2Itens.setNome("Festa A");
+        comBuffet2Itens.setTipo("Show");
+        comBuffet2Itens.setDiaSemana(3);
+        comBuffet2Itens.setStatus("REALIZADO");
+        comBuffet2Itens.adicionarItemBuffet(new ItemProduto(new Pizza("Calabresa", "G", 50.0), 2));
+
+        Evento comBuffet1Item = new Evento(2);
+        comBuffet1Item.setNome("Festa B");
+        comBuffet1Item.setTipo("Show");
+        comBuffet1Item.setDiaSemana(3);
+        comBuffet1Item.setStatus("REALIZADO");
+        comBuffet1Item.adicionarItemBuffet(new ItemProduto(new Pizza("Mussarela", "G", 30.0), 1));
+
+        Evento semBuffet = new Evento(3);
+        semBuffet.setNome("Festa C");
+        semBuffet.setTipo("Show");
+        semBuffet.setDiaSemana(3);
+        semBuffet.setStatus("REALIZADO");
+
+        ArrayList<Evento> eventos = new ArrayList<>();
+        eventos.add(comBuffet2Itens);
+        eventos.add(comBuffet1Item);
+        eventos.add(semBuffet);
+        eventos.add(evento(4, "CANCELADO", 999.0, 5, 50.0));
+
+        String saida = SaidaConsole.capturar(() -> Relatorios.exibirRelatorioCompleto(new ArrayList<>(), eventos));
+
+        assertTrue(saida.contains("Eventos realizados: 3"), saida);
+        assertTrue(saida.contains("Eventos com buffet do restaurante: 2 (66.67%)"), saida);
+        assertTrue(saida.contains("Receita média por buffet contratado: R$ 65.0"), saida);
+        assertTrue(saida.contains("Itens médios fornecidos pelo restaurante: 1.5"), saida);
+    }
+
+    @Test
+    @DisplayName("IT-34: adesão ao buffet avisa quando não há evento realizado e quando nenhum contratou buffet")
+    void adesaoAoBuffetAvisaCasosSemDados() {
+        String semRealizados = SaidaConsole.capturar(() -> Relatorios.exibirRelatorioCompleto(new ArrayList<>(), new ArrayList<>()));
+
+        assertTrue(semRealizados.contains("Não há eventos realizados para análise."), semRealizados);
+
+        Evento semBuffet = new Evento(1);
+        semBuffet.setNome("Festa");
+        semBuffet.setTipo("Show");
+        semBuffet.setDiaSemana(3);
+        semBuffet.setStatus("REALIZADO");
+
+        ArrayList<Evento> eventos = new ArrayList<>();
+        eventos.add(semBuffet);
+
+        String semBuffetContratado = SaidaConsole.capturar(() -> Relatorios.exibirRelatorioCompleto(new ArrayList<>(), eventos));
+
+        assertTrue(semBuffetContratado.contains("Eventos com buffet do restaurante: 0 (0.0%)"), semBuffetContratado);
+        assertTrue(semBuffetContratado.contains("Nenhum evento realizado contratou o buffet do restaurante."), semBuffetContratado);
+    }
+
+    @Test
+    @DisplayName("IT-35: faturamento do salão em dia de evento conta só vendas servidas desses dias")
+    void faturamentoDoSalaoEmDiasDeEvento() {
+        Pedido vendaDiaComEvento = vendaServida(40.0);
+        vendaDiaComEvento.setDiaDaSemana(2);
+
+        Pedido vendaDiaSemEvento = vendaServida(100.0);
+        vendaDiaSemEvento.setDiaDaSemana(4);
+
+        Pedido canceladaNoDiaDoEvento = vendaServida(500.0);
+        canceladaNoDiaDoEvento.setStatus("CANCELADO");
+        canceladaNoDiaDoEvento.setDiaDaSemana(5);
+
+        ArrayList<Pedido> pedidos = new ArrayList<>();
+        pedidos.add(vendaDiaComEvento);
+        pedidos.add(vendaDiaSemEvento);
+        pedidos.add(canceladaNoDiaDoEvento);
+
+        Evento eventoDia2 = evento(1, "AGENDADO", 100.0, 0, 50.0);
+        eventoDia2.setDiaSemana(2);
+
+        Evento eventoDia5 = evento(2, "REALIZADO", 100.0, 1, 50.0);
+        eventoDia5.setDiaSemana(5);
+
+        ArrayList<Evento> eventos = new ArrayList<>();
+        eventos.add(eventoDia2);
+        eventos.add(eventoDia5);
+
+        String saida = SaidaConsole.capturar(() -> Relatorios.exibirRelatorioCompleto(pedidos, eventos));
+
+        assertTrue(saida.contains("Total de vendas analisadas: 1"), saida);
+        assertTrue(saida.contains("Faturamento acumulado no salão: R$ 40.0"), saida);
+
+        ArrayList<Pedido> soDiaSemEvento = new ArrayList<>();
+        soDiaSemEvento.add(vendaDiaSemEvento);
+
+        String semVendas = SaidaConsole.capturar(() -> Relatorios.exibirRelatorioCompleto(soDiaSemEvento, eventos));
+
+        assertTrue(semVendas.contains("O salão não registrou vendas nos dias com eventos."), semVendas);
+    }
+
+    @Test
+    @DisplayName("IT-36: evento de maior buffet é o de maior valor total, ignorando buffet vazio")
+    void eventoMaiorBuffetEscolheMaiorValor() {
+        Evento buffet100 = evento(1, "REALIZADO", 100.0, 2, 50.0);
+
+        Evento buffet250 = new Evento(2);
+        buffet250.setNome("Formatura");
+        buffet250.setTipo("Formatura");
+        buffet250.setDiaSemana(3);
+        buffet250.setStatus("REALIZADO");
+        buffet250.adicionarItemBuffet(new ItemProduto(new Pizza("Calabresa", "G", 125.0), 2));
+
+        Evento semBuffet = new Evento(3);
+        semBuffet.setNome("Sem buffet");
+        semBuffet.setTipo("Show");
+        semBuffet.setDiaSemana(3);
+        semBuffet.setStatus("REALIZADO");
+
+        ArrayList<Evento> eventos = new ArrayList<>();
+        eventos.add(buffet100);
+        eventos.add(buffet250);
+        eventos.add(semBuffet);
+
+        String saida = SaidaConsole.capturar(() -> Relatorios.exibirRelatorioCompleto(new ArrayList<>(), eventos));
+
+        assertTrue(saida.contains("Evento #2 - Formatura"), saida);
+        assertTrue(saida.contains("Tipo: Formatura | Dia: Qua"), saida);
+        assertTrue(saida.contains("Valor total do buffet: R$ 250.0"), saida);
+    }
+
+    @Test
+    @DisplayName("IT-37: receita combinada por dia separa salão e eventos e ignora evento não realizado")
+    void receitaCombinadaPorDiaSeparaSalaoEEventos() {
+        ArrayList<Pedido> pedidos = new ArrayList<>();
+        pedidos.add(vendaServida(60.0));
+
+        ArrayList<Evento> eventos = new ArrayList<>();
+        eventos.add(evento(1, "REALIZADO", 90.0, 1, 50.0)); 
+        eventos.add(evento(2, "CANCELADO", 500.0, 9, 50.0));
+
+        String saida = SaidaConsole.capturar(() -> Relatorios.exibirRelatorioCompleto(pedidos, eventos));
+
+        assertTrue(saida.contains("Qua: R$ 200.0 | Salão: R$ 60.0 (30.0%) | Eventos: R$ 140.0 (70.0%) | Eventos realizados: 1"), saida);
     }
 
     private static Pedido vendaServida(double valor) {
