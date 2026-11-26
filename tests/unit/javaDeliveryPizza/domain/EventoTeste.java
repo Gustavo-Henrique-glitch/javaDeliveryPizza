@@ -167,8 +167,7 @@ class EventoTeste {
             ()-> evento.setCapacidade(-10),
             ()-> assertEquals(-10, evento.getCapacidade())
         );
-        evento.setCapacidade(100);
-        evento.setCapacidade(-10);
+        
         
     }
 }
